@@ -1,54 +1,95 @@
 # Sign Language Translator
 
-Project Python Computer Vision untuk mendeteksi gesture tangan dari webcam secara real-time, lalu menerjemahkannya menjadi teks di layar. Project ini dibuat agar cocok untuk portfolio fresh graduate karena memiliki alur end-to-end: pengumpulan dataset, training model, inference real-time, dan logging hasil prediksi.
+Sign Language Translator adalah project Computer Vision berbasis Python untuk mendeteksi gesture tangan dari webcam secara real-time, lalu menerjemahkan hasil prediksi menjadi teks di layar. Project ini dibuat sebagai alur end-to-end: mulai dari pengumpulan dataset menggunakan kamera, training model klasifikasi gesture, prediksi langsung, sampai penyimpanan riwayat hasil prediksi.
 
-## Fitur
+Project ini cocok untuk portfolio karena menunjukkan penerapan OpenCV, MediaPipe Hands, feature extraction, machine learning dengan Scikit-learn, dan integrasi aplikasi real-time.
 
-- Membuka kamera laptop/webcam secara real-time.
-- Mendeteksi tangan menggunakan MediaPipe Hands.
-- Mengubah landmark tangan menjadi fitur numerik yang ringan.
-- Melatih model klasifikasi gesture dengan Scikit-learn.
-- Menampilkan hasil prediksi langsung di layar kamera.
-- Mendukung tangan kanan dan kiri dengan mirror augmentation.
-- Menyimpan riwayat prediksi stabil ke file CSV.
-- Memiliki error handling jika kamera atau model belum tersedia.
+## Referensi Gesture
+
+Gambar berikut digunakan sebagai referensi visual untuk bentuk tangan alfabet ASL/Fingerspelling.
+
+<p align="center">
+  <img src="assets/asl-finger-chart.png" alt="ASL fingerspelling alphabet reference" width="760">
+</p>
+
+Catatan penting:
+
+- Model tidak otomatis mengenali semua huruf hanya dari gambar di atas.
+- Model mengenali gesture berdasarkan dataset yang kamu kumpulkan sendiri.
+- Huruf seperti `J` dan `Z` memiliki gerakan dinamis. Versi project ini membaca pose tangan per frame, sehingga gesture dinamis akan lebih baik jika dikembangkan dengan model sequence/time-series.
+
+## Fitur Utama
+
+- Deteksi tangan real-time dari webcam.
+- Tracking 21 landmark tangan menggunakan MediaPipe Hands.
+- Ekstraksi fitur landmark menjadi data numerik yang ringan.
+- Training model klasifikasi gesture menggunakan Random Forest dari Scikit-learn.
+- Prediksi gesture langsung di window kamera.
+- Smoothing prediksi agar hasil tidak mudah berubah-ubah.
+- Auto text untuk menambahkan gesture stabil ke kalimat terjemahan.
+- Dukungan tangan kanan dan kiri melalui mirror augmentation.
+- Logging hasil prediksi stabil ke file CSV.
+- Error handling jika kamera, dataset, atau model belum tersedia.
 - Bisa dijalankan di laptop tanpa GPU.
 
-## Gesture Awal
+## Teknologi
 
-Label gesture yang disarankan untuk dataset pertama:
+- Python
+- OpenCV
+- MediaPipe
+- NumPy
+- Pandas
+- Scikit-learn
+- Joblib
 
-- A
-- B
-- C
-- I Love You
-- Hello
-- Thank You
-- Yes
-- No
+## Cara Kerja Project
 
-Catatan: project ini menggunakan model yang dilatih dari dataset kamu sendiri. Jadi gesture di atas akan dikenali setelah kamu mengumpulkan data dan menjalankan training.
+Alur kerja project ini terdiri dari empat tahap:
+
+1. Kamera membaca tangan pengguna secara real-time.
+2. MediaPipe Hands mendeteksi 21 titik landmark pada tangan.
+3. Landmark dinormalisasi agar model fokus pada bentuk tangan, bukan posisi tangan di layar.
+4. Model machine learning memprediksi label gesture, lalu aplikasi menampilkan hasilnya sebagai teks.
+
+Dataset dan model training tidak disimpan ke GitHub karena ukurannya dapat berubah dan bersifat hasil generate. File tersebut akan dibuat otomatis setelah proses collect dataset dan training dijalankan.
 
 ## Struktur Project
 
 ```text
-sign-language-translator/
-├── app.py
-├── collect_dataset.py
-├── train_model.py
-├── predict.py
-├── requirements.txt
-├── README.md
-├── dataset/
-├── model/
-└── logs/
+Sign Language Translator/
+|-- app.py
+|-- collect_dataset.py
+|-- collect_l_to_z.py
+|-- collect_l_to_z.ps1
+|-- train_model.py
+|-- predict.py
+|-- requirements.txt
+|-- README.md
+|-- assets/
+|   `-- asl-finger-chart.png
+|-- dataset/
+|   `-- .gitkeep
+|-- model/
+|   `-- .gitkeep
+`-- logs/
+    `-- .gitkeep
 ```
+
+Keterangan file utama:
+
+- `app.py`: menjalankan aplikasi real-time translator dari webcam.
+- `collect_dataset.py`: mengumpulkan sample gesture dan menyimpannya ke CSV.
+- `collect_l_to_z.py`: helper untuk mengumpulkan huruf `L` sampai `Z` secara berurutan.
+- `train_model.py`: melatih model klasifikasi dari dataset yang sudah dikumpulkan.
+- `predict.py`: berisi fungsi ekstraksi fitur dan prediksi model.
+- `requirements.txt`: daftar dependency Python.
 
 ## Instalasi
 
-Masuk ke folder project:
+Clone repository:
 
 ```bash
+git clone https://github.com/FanyaDs/sign-language-translator.git
 cd sign-language-translator
 ```
 
@@ -76,26 +117,30 @@ Install dependency:
 pip install -r requirements.txt
 ```
 
-## Cara Mengumpulkan Dataset
+## Mengumpulkan Dataset
 
-Kumpulkan data untuk setiap gesture. Contoh:
+Kumpulkan data untuk setiap label gesture yang ingin dikenali. Contoh untuk alfabet:
 
 ```bash
 python collect_dataset.py --label A --samples 120
 python collect_dataset.py --label B --samples 120
 python collect_dataset.py --label C --samples 120
-python collect_dataset.py --label "I Love You" --samples 120
+```
+
+Contoh untuk gesture berupa kata/frasa:
+
+```bash
 python collect_dataset.py --label Hello --samples 120
 python collect_dataset.py --label "Thank You" --samples 120
-python collect_dataset.py --label Yes --samples 120
-python collect_dataset.py --label No --samples 120
+python collect_dataset.py --label "I Love You" --samples 120
 ```
 
 Saat window kamera terbuka:
 
 - Arahkan satu tangan ke kamera.
+- Pastikan tangan terlihat jelas dan tidak terlalu dekat.
 - Tekan `SPACE` untuk menyimpan satu sample.
-- Tekan `Q` untuk keluar.
+- Tekan `Q` atau `ESC` untuk keluar.
 
 Mode otomatis juga tersedia:
 
@@ -109,15 +154,28 @@ Dataset akan tersimpan di:
 dataset/gesture_dataset.csv
 ```
 
+Jika ingin mengumpulkan huruf `L` sampai `Z` secara berurutan, jalankan:
+
+```bash
+python collect_l_to_z.py --samples 120
+```
+
+Untuk mode otomatis:
+
+```bash
+python collect_l_to_z.py --samples 120 --auto --interval 0.2
+```
+
 ## Tips Dataset Agar Akurat
 
-- Ambil minimal 80-150 sample per gesture.
+- Ambil minimal 80 sampai 150 sample untuk setiap label.
 - Gunakan variasi jarak tangan dari kamera.
-- Gunakan variasi posisi tangan sedikit ke kiri, kanan, atas, dan bawah.
+- Gunakan variasi posisi tangan: tengah, kiri, kanan, atas, dan bawah.
 - Ambil data di beberapa kondisi cahaya.
-- Jaga label tetap konsisten, misalnya gunakan `I Love You`, bukan kadang `ILY`.
-- Kamu boleh mengumpulkan dataset dari satu tangan saja karena training otomatis membuat versi mirrored, tetapi dataset dari kedua tangan tetap bisa menambah variasi.
-- Untuk gesture seperti `Hello`, `Thank You`, `Yes`, dan `No`, versi awal ini mempelajari pose tangan per frame. Pengembangan berikutnya bisa memakai sequence/time-series agar gerakan dinamis lebih natural.
+- Gunakan label yang konsisten, misalnya selalu `I Love You`, bukan bergantian dengan `ILY`.
+- Gunakan satu tangan saja di dalam frame saat mengumpulkan sample.
+- Tambahkan sample dari tangan kanan dan kiri jika ingin hasil lebih kuat.
+- Untuk huruf yang mirip, seperti `M`, `N`, `S`, dan `T`, ambil sample lebih banyak agar model lebih mudah membedakan.
 
 ## Training Model
 
@@ -127,12 +185,6 @@ Setelah dataset terkumpul, jalankan:
 python train_model.py
 ```
 
-Secara default, training menggandakan data menjadi versi mirrored agar gesture yang sama bisa dikenali dengan tangan kanan maupun kiri. Jika ingin mematikan fitur ini:
-
-```bash
-python train_model.py --no-mirror-augment
-```
-
 Output training:
 
 ```text
@@ -140,28 +192,41 @@ model/sign_language_model.pkl
 model/training_report.txt
 ```
 
-Jika dataset masih kecil, report akan memberi catatan bahwa evaluasi belum ideal. Tambahkan sample per label untuk hasil yang lebih stabil.
+Secara default, training menambahkan mirror augmentation agar gesture dapat dikenali dari tangan kanan maupun kiri. Jika ingin mematikan fitur tersebut:
 
-## Menjalankan Aplikasi Real-Time
+```bash
+python train_model.py --no-mirror-augment
+```
+
+Jika dataset masih kecil, report training akan memberi catatan bahwa evaluasi belum ideal. Tambahkan sample per label agar akurasi lebih stabil.
+
+## Menjalankan Aplikasi
+
+Jalankan aplikasi real-time:
 
 ```bash
 python app.py
 ```
 
-Jika window kamera terlalu besar atau teks terlihat kepotong, batasi ukuran tampilan:
+Jika window kamera terlalu besar, gunakan ukuran display yang lebih kecil:
 
 ```bash
-python app.py --display-width 960 --display-height 540
+python app.py --no-fullscreen --display-width 960 --display-height 540
+```
+
+Jika kamera default tidak terdeteksi, coba index kamera lain:
+
+```bash
+python app.py --camera 1
 ```
 
 Kontrol aplikasi:
 
 - `SPACE`: menambahkan prediksi stabil ke teks.
-- `BACKSPACE`: menghapus kata terakhir.
+- `ENTER`: menambahkan spasi antar kata.
+- `BACKSPACE`: menghapus token terakhir.
 - `C`: membersihkan teks.
-- `Q` atau `ESC`: keluar.
-
-Aplikasi menampilkan `Hand: Kanan/Kiri` di panel kamera. Untuk hasil paling stabil, gunakan satu tangan saja di dalam frame pada satu waktu.
+- `Q` atau `ESC`: keluar dari aplikasi.
 
 Riwayat prediksi stabil tersimpan di:
 
@@ -169,41 +234,65 @@ Riwayat prediksi stabil tersimpan di:
 logs/gesture_history.csv
 ```
 
-## Jika Kamera Tidak Terdeteksi
+## Troubleshooting
 
-Coba langkah berikut:
+Jika kamera tidak terbuka:
 
-```bash
-python app.py --camera 1
-python collect_dataset.py --label A --camera 1
-```
-
-Jika masih gagal:
-
-- Tutup aplikasi lain yang memakai kamera, seperti Zoom, Google Meet, atau OBS.
-- Pastikan browser/aplikasi lain tidak sedang mengunci webcam.
+- Tutup aplikasi lain yang memakai kamera, seperti Zoom, Google Meet, OBS, atau browser.
+- Coba jalankan dengan `--camera 1`.
 - Periksa permission kamera di sistem operasi.
-- Coba webcam eksternal.
+- Coba webcam eksternal jika kamera laptop tidak terbaca.
 
-## Cara Project Ini Ditulis di CV
+Jika model belum terbaca:
 
-Contoh bullet point CV:
+- Pastikan dataset sudah dibuat di `dataset/gesture_dataset.csv`.
+- Jalankan `python train_model.py`.
+- Pastikan file `model/sign_language_model.pkl` berhasil dibuat.
+
+Jika prediksi kurang akurat:
+
+- Tambahkan jumlah sample untuk label yang sering salah.
+- Ambil sample dengan pencahayaan yang lebih stabil.
+- Hindari background yang terlalu ramai.
+- Pastikan pose tangan saat testing mirip dengan variasi saat pengumpulan dataset.
+
+## Catatan Untuk GitHub
+
+File berikut sengaja tidak diupload ke repository:
+
+- `.venv/`
+- `dataset/*.csv`
+- `logs/*.csv`
+- `model/*.pkl`
+- `model/*.joblib`
+- `model/training_report.txt`
+
+Alasannya, file tersebut adalah hasil generate lokal dan dapat dibuat ulang dengan proses collect dataset dan training.
+
+## Contoh Deskripsi Untuk CV
+
+Versi bahasa Inggris:
 
 ```text
-Developed a real-time Sign Language Translator using Python, OpenCV, MediaPipe Hands, and Scikit-learn, including webcam-based data collection, gesture classification training, live inference, and CSV prediction logging.
+Developed a real-time Sign Language Translator using Python, OpenCV, MediaPipe Hands, and Scikit-learn, including webcam-based data collection, hand landmark feature extraction, gesture classification training, live inference, and CSV prediction logging.
 ```
 
 Versi bahasa Indonesia:
 
 ```text
-Mengembangkan aplikasi real-time Sign Language Translator menggunakan Python, OpenCV, MediaPipe Hands, dan Scikit-learn, mencakup pengumpulan dataset dari webcam, training model klasifikasi gesture, inference langsung, dan logging hasil prediksi ke CSV.
+Mengembangkan aplikasi Sign Language Translator real-time menggunakan Python, OpenCV, MediaPipe Hands, dan Scikit-learn, mencakup pengumpulan dataset dari webcam, ekstraksi fitur landmark tangan, training model klasifikasi gesture, inference langsung, dan logging hasil prediksi ke CSV.
 ```
 
 ## Ide Pengembangan Lanjutan
 
-- Menambahkan lebih banyak label bahasa isyarat.
-- Menggunakan model sequence untuk gesture dinamis.
-- Menambahkan GUI dengan Streamlit atau PyQt.
-- Menyimpan metrik training ke dashboard.
-- Menambahkan mode kalibrasi untuk tangan kiri dan kanan.
+- Menambahkan dataset lengkap alfabet `A` sampai `Z`.
+- Menambahkan gesture kata sehari-hari seperti `Hello`, `Thank You`, `Yes`, dan `No`.
+- Menggunakan model sequence untuk gesture dinamis seperti `J`, `Z`, `Hello`, atau `Thank You`.
+- Menambahkan GUI dengan Streamlit, PyQt, atau web app.
+- Menambahkan dashboard metrik training.
+- Menambahkan mode kalibrasi kamera.
 - Export model ke format yang lebih ringan untuk deployment.
+
+## Kredit Gambar
+
+Gambar referensi alfabet ASL/Fingerspelling berasal dari chart William Vicars/Lifeprint yang ditampilkan pada artikel [Kathleen Ink](https://kathleen-ink.com/nudged-learn-how-to-sign-a-fun-phrase-in-american-sign-language/).
