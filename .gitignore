@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+dataset/*.csv
+logs/*.csv
+model/*.pkl
+model/*.joblib
+model/training_report.txt
