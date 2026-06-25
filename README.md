@@ -269,6 +269,12 @@ File berikut sengaja tidak diupload ke repository:
 
 Alasannya, file tersebut adalah hasil generate lokal dan dapat dibuat ulang dengan proses collect dataset dan training.
 
+## Lisensi Dan Penggunaan
+
+Project ini dipublikasikan untuk portfolio, referensi pembelajaran, dan evaluasi lokal. Orang lain boleh melihat source code dan menjalankan project secara lokal, tetapi tidak diperbolehkan menyalin ulang, mengupload ulang, menjual, memodifikasi, atau mengklaim project ini sebagai milik sendiri tanpa izin tertulis dari pemilik repository.
+
+Lihat detail pada file `LICENSE`.
+
 ## Contoh Deskripsi Untuk CV
 
 Versi bahasa Inggris:
