@@ -4,6 +4,7 @@ __pycache__/
 .pytest_cache/
 
 dataset/*.csv
+!dataset/gesture_dataset.csv
 logs/*.csv
 model/*.pkl
 model/*.joblib

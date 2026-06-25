@@ -51,7 +51,7 @@ Alur kerja project ini terdiri dari empat tahap:
 3. Landmark dinormalisasi agar model fokus pada bentuk tangan, bukan posisi tangan di layar.
 4. Model machine learning memprediksi label gesture, lalu aplikasi menampilkan hasilnya sebagai teks.
 
-Dataset dan model training tidak disimpan ke GitHub karena ukurannya dapat berubah dan bersifat hasil generate. File tersebut akan dibuat otomatis setelah proses collect dataset dan training dijalankan.
+Dataset utama sudah disertakan di GitHub agar project bisa langsung digunakan untuk training ulang. Model hasil training tidak disimpan ke repository, sehingga pengguna tetap perlu menjalankan `python train_model.py` setelah clone.
 
 ## Struktur Project
 
@@ -258,16 +258,19 @@ Jika prediksi kurang akurat:
 
 ## Catatan Untuk GitHub
 
+Dataset utama berikut ikut disimpan di repository:
+
+- `dataset/gesture_dataset.csv`
+
 File berikut sengaja tidak diupload ke repository:
 
 - `.venv/`
-- `dataset/*.csv`
 - `logs/*.csv`
 - `model/*.pkl`
 - `model/*.joblib`
 - `model/training_report.txt`
 
-Alasannya, file tersebut adalah hasil generate lokal dan dapat dibuat ulang dengan proses collect dataset dan training.
+Alasannya, file tersebut adalah environment lokal, log, atau hasil generate training yang dapat dibuat ulang dengan menjalankan `python train_model.py`.
 
 ## Lisensi Dan Penggunaan
 
