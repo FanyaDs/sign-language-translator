@@ -1,0 +1,71 @@
+Sign Language Translator - Training Report
+================================================
+Created at: 2026-06-25T19:50:40
+Dataset: C:\PROJECT FANY\Sign Language Translator\dataset\gesture_dataset.csv
+Raw samples: 3376
+Training samples: 5400
+Mirror augmentation: enabled
+Label counts:
+label
+A    263
+B    120
+C    120
+D    120
+E    120
+F    120
+G    120
+H    120
+I    120
+J    120
+K    120
+L    233
+M    120
+N    120
+O    120
+P    120
+Q    120
+R    120
+S    120
+T    120
+U    120
+V    120
+W    120
+X    120
+Y    120
+Z    120
+
+Validation menggunakan stratified train-test split.
+Accuracy: 0.9882
+
+              precision    recall  f1-score   support
+
+           A       1.00      1.00      1.00       106
+           B       1.00      1.00      1.00        48
+           C       1.00      1.00      1.00        48
+           D       1.00      1.00      1.00        48
+           E       0.96      1.00      0.98        48
+           F       1.00      1.00      1.00        48
+           G       0.96      1.00      0.98        48
+           H       1.00      1.00      1.00        48
+           I       1.00      1.00      1.00        48
+           J       0.96      1.00      0.98        48
+           K       1.00      1.00      1.00        48
+           L       1.00      1.00      1.00        94
+           M       1.00      0.96      0.98        48
+           N       1.00      1.00      1.00        48
+           O       1.00      1.00      1.00        48
+           P       0.96      1.00      0.98        48
+           Q       1.00      1.00      1.00        48
+           R       1.00      0.96      0.98        48
+           S       0.89      1.00      0.94        48
+           T       1.00      0.92      0.96        48
+           U       0.96      1.00      0.98        48
+           V       1.00      1.00      1.00        48
+           W       1.00      1.00      1.00        48
+           X       1.00      0.96      0.98        48
+           Y       1.00      0.92      0.96        48
+           Z       1.00      0.96      0.98        48
+
+    accuracy                           0.99      1352
+   macro avg       0.99      0.99      0.99      1352
+weighted avg       0.99      0.99      0.99      1352

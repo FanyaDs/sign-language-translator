@@ -51,7 +51,7 @@ Alur kerja project ini terdiri dari empat tahap:
 3. Landmark dinormalisasi agar model fokus pada bentuk tangan, bukan posisi tangan di layar.
 4. Model machine learning memprediksi label gesture, lalu aplikasi menampilkan hasilnya sebagai teks.
 
-Dataset utama sudah disertakan di GitHub agar project bisa langsung digunakan untuk training ulang. Model hasil training tidak disimpan ke repository, sehingga pengguna tetap perlu menjalankan `python train_model.py` setelah clone.
+Dataset utama dan model hasil training sudah disertakan di GitHub agar project bisa langsung dijalankan setelah dependency terinstall. Jika ingin memperbarui model dari dataset yang ada, jalankan `python train_model.py`.
 
 ## Struktur Project
 
@@ -179,7 +179,13 @@ python collect_l_to_z.py --samples 120 --auto --interval 0.2
 
 ## Training Model
 
-Setelah dataset terkumpul, jalankan:
+Model hasil training sudah tersedia di:
+
+```text
+model/sign_language_model.pkl
+```
+
+Jika ingin training ulang dari dataset yang tersedia, jalankan:
 
 ```bash
 python train_model.py
@@ -202,7 +208,7 @@ Jika dataset masih kecil, report training akan memberi catatan bahwa evaluasi be
 
 ## Menjalankan Aplikasi
 
-Jalankan aplikasi real-time:
+Setelah dependency terinstall, aplikasi bisa langsung dijalankan karena dataset dan model sudah tersedia di repository:
 
 ```bash
 python app.py
@@ -261,16 +267,16 @@ Jika prediksi kurang akurat:
 Dataset utama berikut ikut disimpan di repository:
 
 - `dataset/gesture_dataset.csv`
+- `model/sign_language_model.pkl`
+- `model/training_report.txt`
 
 File berikut sengaja tidak diupload ke repository:
 
 - `.venv/`
 - `logs/*.csv`
-- `model/*.pkl`
 - `model/*.joblib`
-- `model/training_report.txt`
 
-Alasannya, file tersebut adalah environment lokal, log, atau hasil generate training yang dapat dibuat ulang dengan menjalankan `python train_model.py`.
+Alasannya, file tersebut adalah environment lokal, log, atau format model tambahan yang tidak diperlukan untuk menjalankan project.
 
 ## Lisensi Dan Penggunaan
 
